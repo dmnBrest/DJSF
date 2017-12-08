@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% load static %}
+{% load account %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+    <app-root></app-root>
+    <script type="text/javascript" src="{% static '/apps/app1/inline.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static '/apps/app1/polyfills.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static '/apps/app1/styles.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static '/apps/app1/vendor.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static '/apps/app1/main.bundle.js'%}"></script>
+{% endblock %}

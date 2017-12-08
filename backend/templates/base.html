@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>{% block title %}DJSF{% endblock %}</title>
+	<script
+		src="https://code.jquery.com/jquery-3.2.1.min.js"
+		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+		crossorigin="anonymous"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
+	<script src="https://use.fontawesome.com/14ee000d5e.js"></script>
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,500,700&amp;subset=cyrillic" rel="stylesheet">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/spin.js/2.3.2/spin.min.js"></script>
+
+	{% load static %}
+	<link rel="stylesheet" href="{% static 'libs/slds245/assets/styles/salesforce-lightning-design-system.css' %}">
+	<link rel="stylesheet" href="{% static 'global.css' %}">
+	{% block head %}{% endblock %}
+</head>
+<body>
+	<div class="c-header">
+		<div class="slds-grid">
+			<div class="slds-col">
+				<img src="{% static 'icon3.png' %}" alt="E2 CMS Logo" class="c-logo" />
+				<span class="c-site-title">DJSF</span>
+			</div>
+			<div class="slds-col">
+
+			</div>
+		</div>
+	</div>
+	<div class="c-sub-header">
+		<div class="slds-grid">
+			<div class="slds-col"></div>
+			<div class="slds-col c-right">
+				{% if user.is_authenticated %}
+					Welcome {{ user.username }}, <a href="{% url 'account_logout' %}">Logout</a>
+				{% else %}
+					<a href="{% url 'account_login' %}">Sign In</a>
+                    &nbsp;
+					<a href="{% url 'account_signup' %}">Sign Up</a>
+				{% endif %}
+			</div>
+		</div>
+	</div>
+	<div class="c-content">
+		{% block content %}{% endblock %}
+	</div>
+    <div class="c-footer">
+        {% block footer %}
+        &copy; Copyright 2017 by Dmitry Shnyrev.
+        {% endblock %}
+    </div>
+</body>
+</html>

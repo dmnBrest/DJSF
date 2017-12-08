@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% load static %}
+{% load account %}
+{% block head %}
+
+{% endblock %}
+{% block content %}
+	<h1>HOME</h1>
+
+	{% user_display user %}
+
+{#	<div>#}
+{#		{% verbatim %}#}
+{#		<div id="app">#}
+{#			{{ message }}#}
+{#		</div>#}
+{#		{% endverbatim %}#}
+{#	</div>#}
+
+{% endblock %}

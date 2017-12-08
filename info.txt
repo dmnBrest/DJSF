@@ -1,0 +1,11 @@
+docker-compose run web django-admin.py startproject example1 .
+
+docker-compose run --rm web python3 ./manage.py migrate
+
+docker-compose run --rm db psql -h db -U postgres postgres
+\dt - list of tables
+
+docker-compose run --rm db pg_dump -h db -U postgres postgres > database.sql
+
+# build and watch with destination to ./backend/static/dist/app1
+docker-compose run --rm frontend npm start
