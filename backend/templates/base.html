@@ -20,38 +20,51 @@
 	{% block head %}{% endblock %}
 </head>
 <body>
-	<div class="c-header">
-		<div class="slds-grid">
-			<div class="slds-col">
-				<img src="{% static 'icon3.png' %}" alt="E2 CMS Logo" class="c-logo" />
-				<span class="c-site-title">DJSF</span>
-			</div>
-			<div class="slds-col">
+    <div id="c-container">
+        <div class="c-header">
+            <div class="slds-grid">
+                <div class="slds-col">
+                    <a href="{% url 'home:index' %}" class="c-logo-link">
+                        <img src="{% static 'icon3.png' %}" alt="E2 CMS Logo" class="c-logo" />
+                        <span class="c-site-title">DJSF</span>
+                    </a>
+                </div>
+                <div class="slds-col">
 
-			</div>
-		</div>
-	</div>
-	<div class="c-sub-header">
-		<div class="slds-grid">
-			<div class="slds-col"></div>
-			<div class="slds-col c-right">
-				{% if user.is_authenticated %}
-					Welcome {{ user.username }}, <a href="{% url 'account_logout' %}">Logout</a>
-				{% else %}
-					<a href="{% url 'account_login' %}">Sign In</a>
-                    &nbsp;
-					<a href="{% url 'account_signup' %}">Sign Up</a>
-				{% endif %}
-			</div>
-		</div>
-	</div>
-	<div class="c-content">
-		{% block content %}{% endblock %}
-	</div>
-    <div class="c-footer">
-        {% block footer %}
-        &copy; Copyright 2017 by Dmitry Shnyrev.
-        {% endblock %}
+                </div>
+            </div>
+        </div>
+        <div class="c-sub-header">
+            <div class="slds-grid">
+                <div class="slds-col"></div>
+                <div class="slds-col c-right">
+                    {% if user.is_authenticated %}
+                        Welcome <a href="{% url 'profile:index' %}">{{ user.username }}</a>, <a href="{% url 'account_logout' %}">Logout</a>
+                    {% else %}
+                        <a href="{% url 'account_login' %}">Sign In</a>
+                        &nbsp;
+                        <a href="{% url 'account_signup' %}">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        <div class="c-messages-box">
+            {% if messages %}
+            <ul class="c-messages">
+                {% for message in messages %}
+                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+        <div class="c-content">
+            {% block content %}{% endblock %}
+        </div>
+        <div class="c-footer">
+            {% block footer %}
+            &copy; Copyright 2017 by Dmitry Shnyrev.
+            {% endblock %}
+        </div>
     </div>
 </body>
 </html>

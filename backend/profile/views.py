@@ -1,10 +1,17 @@
-from django.shortcuts import render
+import json
+from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 from django.core.mail import send_mail
+from pprint import pprint
+from django.contrib.auth.models import User
+from django.core import serializers
+from django.forms.models import model_to_dict
+
+from djsf.serializers import UserSerializer
 
 @login_required
 def index(request):
-    print('Doom')
 
     # send_mail(
     #     'Subject here',
@@ -15,5 +22,24 @@ def index(request):
     # )
     #
     # print('Send mail')
+
+    pprint(request.user)
+    pprint(request.user.is_superuser)
+    pprint(request.user.id)
+    u = User.objects.get(id=request.user.id)
+    print(u)
+    pprint(u)
+    print(serializers.serialize('json', [u]))
+    print('XXXXX')
+    print(UserSerializer(u, context={'request': request}).data)
+
+    if request.user.is_superuser:
+        return redirect('admin:index')
+
+
+    messages.add_message(request, messages.INFO, 'Hello world.')
+
+
+
 
     return render(request, 'profile/index.html', {})
