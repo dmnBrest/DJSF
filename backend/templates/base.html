@@ -9,6 +9,7 @@
 		src="https://code.jquery.com/jquery-3.2.1.min.js"
 		integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
 		crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/4.17.4/lodash.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.18.1/moment.min.js"></script>
 	<script src="https://use.fontawesome.com/14ee000d5e.js"></script>
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,400i,500,700&amp;subset=cyrillic" rel="stylesheet">
@@ -39,7 +40,7 @@
                 <div class="slds-col"></div>
                 <div class="slds-col c-right">
                     {% if user.is_authenticated %}
-                        Welcome <a href="{% url 'profile:index' %}">{{ user.username }}</a>, <a href="{% url 'account_logout' %}">Logout</a>
+                        Welcome <a href="{% url 'profile:index' %}">{{ user.username }}</a>, <a href="{% url 'account_logout' %}">Sign out</a>
                     {% else %}
                         <a href="{% url 'account_login' %}">Sign In</a>
                         &nbsp;
@@ -48,15 +49,9 @@
                 </div>
             </div>
         </div>
-        <div class="c-messages-box">
-            {% if messages %}
-            <ul class="c-messages">
-                {% for message in messages %}
-                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-            {% endif %}
-        </div>
+
+        <div class="c-messages-box"></div>
+
         <div class="c-content">
             {% block content %}{% endblock %}
         </div>
@@ -66,5 +61,8 @@
             {% endblock %}
         </div>
     </div>
+
+    {% include "messages-service.html" %}
+
 </body>
 </html>

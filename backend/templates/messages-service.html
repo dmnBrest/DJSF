@@ -1,0 +1,54 @@
+{% load static %}
+<script id="c-messages-box-template" type="text/template">
+    <% _.forEach(messages, function(message, index) { %>
+    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_<%- message.type %>" role="alert">
+        <h2><%- message.text %></h2>
+        <button class="slds-button slds-button_icon slds-notify__close slds-button_icon-inverse c-remove-message-button" data-index="<%- index %>" title="Close">
+            <svg class="slds-button__icon" aria-hidden="true">
+                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{% static 'libs/slds245/assets/icons/utility-sprite/svg/symbols.svg'%}#close" />
+            </svg>
+            <span class="slds-assistive-text">Close</span>
+        </button>
+    </div>
+    <% }); %>
+</script>
+
+<script>
+
+    var MessagesService = {
+        INFO: 'info',
+        ERROR: 'error',
+        WARNING: 'warning',
+        SUCCESS: 'success',
+        messagesBox: jQuery('.c-messages-box'),
+        messagesBoxTemplate: _.template(jQuery('#c-messages-box-template').text()),
+        messages: [
+            {% if messages %}
+                {% for message in messages %}
+                    {type: '{{ message.tags }}', text: '{{ message }}'},
+                {% endfor %}
+            {% endif %}
+        ],
+        render: function() {
+            console.log('MESSAGES:');
+            console.log(this.messages);
+            var messagesHtml = this.messagesBoxTemplate({messages: this.messages});
+            this.messagesBox.html(messagesHtml);
+            this.messagesBox.find('.c-remove-message-button').each(function() {
+                jQuery(this).off('click').on('click', function() {
+                    var index = jQuery(this).data('index');
+                    MessagesService.messages.splice(index, 1);
+                    MessagesService.render();
+                })
+            })
+        },
+        add: function(type, text) {
+            this.messages.push({type: type, text: text});
+            this.render();
+        },
+        clear: function() {
+            this.messages = [];
+        }
+    };
+    MessagesService.render();
+</script>

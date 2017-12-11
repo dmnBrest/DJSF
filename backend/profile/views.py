@@ -6,7 +6,7 @@ from django.core.mail import send_mail
 from pprint import pprint
 from django.contrib.auth.models import User
 from django.core import serializers
-from django.forms.models import model_to_dict
+from rest_framework.renderers import JSONRenderer
 
 from djsf.serializers import UserSerializer
 
@@ -32,12 +32,16 @@ def index(request):
     print(serializers.serialize('json', [u]))
     print('XXXXX')
     print(UserSerializer(u, context={'request': request}).data)
+    print(JSONRenderer().render(UserSerializer(u, context={'request': request}).data))
 
     if request.user.is_superuser:
         return redirect('admin:index')
 
 
-    messages.add_message(request, messages.INFO, 'Hello world.')
+    messages.add_message(request, messages.SUCCESS, 'Welcome to profile page!!!')
+    # messages.add_message(request, messages.INFO, 'Hello world.')
+    # messages.add_message(request, messages.ERROR, 'Hello world.')
+    # messages.add_message(request, messages.WARNING, 'Hello world.')
 
 
 

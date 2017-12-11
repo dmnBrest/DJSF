@@ -2,21 +2,113 @@
 <html>
     <head>
         <title>{% block head_title %}{% endblock %}</title>
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'libs/slds245/assets/styles/salesforce-lightning-design-system.css' %}">
+        <link rel="stylesheet" href="{% static 'global.css' %}">
         {% block extra_head %}{% endblock %}
+        <style>
+            .errorlist {
+                color: red;
+            }
+            li.info, li.success {
+                color: #18c7a0;
+            }
+            .c-auth-box {
+                background-color: #fff;
+                margin-top: 40px;
+            }
+            input {
+                background-color: white;
+                border: 1px solid #dddbda;
+                border-radius: 0.25rem;
+                width: 100%;
+                transition: border 0.1s linear, background-color 0.1s linear;
+                display: inline-block;
+                padding: 0 1rem 0 0.75rem;
+                line-height: 1.875rem;
+                min-height: calc(1.875rem + (1px * 2))
+            }
+            p {
+                margin-bottom: 10px;
+            }
+            button, input[type="submit"] {
+                margin-top: 10px;
+                position: relative;
+                background-clip: border-box;
+                text-decoration: none;
+                -webkit-appearance: none;
+                white-space: normal;
+                user-select: none;
+                background-color: #31B89A;
+                border-radius: 0.25rem;
+                width: 100%;
+                transition: border 0.1s linear, background-color 0.1s linear;
+                display: inline-block;
+                padding: 0 1rem 0 0.75rem;
+                line-height: 1.875rem;
+                min-height: calc(1.875rem + (1px * 2));
+                color: #fff;
+                border-color: #31B89A;
+            }
+
+            ::-webkit-input-placeholder { /* WebKit, Blink, Edge */
+                color:    #ccc;
+            }
+            :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+               color:    #ccc;
+               opacity:  1;
+            }
+            ::-moz-placeholder { /* Mozilla Firefox 19+ */
+               color:    #ccc;
+               opacity:  1;
+            }
+            :-ms-input-placeholder { /* Internet Explorer 10-11 */
+               color:    #ccc;
+            }
+            ::-ms-input-placeholder { /* Microsoft Edge */
+               color:    #ccc;
+            }
+            ::placeholder { /* Most modern browsers support this now. */
+               color:    #ccc;
+            }
+
+        </style>
     </head>
     <body>
-    {% block body %}
-        {% if messages %}
-            <div>
-                <strong>Messages:</strong>
-                <ul>
-                    {% for message in messages %}
-                        <li>{{message}}</li>
-                    {% endfor %}
-                </ul>
+
+    <div class="c-header">
+        <div class="slds-grid">
+            <div class="slds-col">
+                <a href="{% url 'home:index' %}" class="c-logo-link">
+                    <img src="{% static 'icon3.png' %}" alt="E2 CMS Logo" class="c-logo" />
+                    <span class="c-site-title">DJSF</span>
+                </a>
             </div>
-        {% endif %}
-        {% block content %}{% endblock %}
+            <div class="slds-col">
+
+            </div>
+        </div>
+    </div>
+
+    {% block body %}
+
+        <div class="slds-grid slds-grid_align-center">
+            <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-large-size_1-of-3">
+                <div class="slds-box c-auth-box">
+                    {% if messages %}
+                        <div>
+                            <ul>
+                                {% for message in messages %}
+                                    <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    {% endif %}
+                    {% block content %}{% endblock %}
+                </div>
+            </div>
+        </div>
+
     {% endblock %}
     {% block extra_body %}{% endblock %}
     </body>
