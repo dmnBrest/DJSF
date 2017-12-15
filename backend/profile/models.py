@@ -9,6 +9,8 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    #firstname = models.CharField(max_length=255, blank=True)
+    #lastname = models.CharField(max_length=255, blank=True)
     website = models.URLField(default='', blank=True)
     phone = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)
@@ -21,10 +23,9 @@ class UserProfile(models.Model):
         verbose_name_plural = 'User Profiles'
 
     def __str__(self):
-        return self.name+' ('+self.user.username+')'
+        return self.name
 
     @property
     def name(self):
         return 'Profile-'+str(self.id)
 
-    #organization = models.ForeignKey(Organization, on_delete=models.SET_NULL)
