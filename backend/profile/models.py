@@ -9,8 +9,6 @@ from django.contrib.auth.models import User
 
 class UserProfile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    #firstname = models.CharField(max_length=255, blank=True)
-    #lastname = models.CharField(max_length=255, blank=True)
     website = models.URLField(default='', blank=True)
     phone = models.CharField(max_length=255, blank=True)
     city = models.CharField(max_length=255, blank=True)

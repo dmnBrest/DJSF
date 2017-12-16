@@ -39,10 +39,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
-    'debug_toolbar',
+    # 'debug_toolbar',
     'allauth',
     'allauth.account',
     'allauth.socialaccount',
+    'easy_thumbnails',
+    'filer',
+    'mptt',
     'profile.apps.ProfileConfig',
     'home.apps.HomeConfig',
 ]
@@ -55,7 +58,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'debug_toolbar.middleware.DebugToolbarMiddleware'
+    # 'debug_toolbar.middleware.DebugToolbarMiddleware'
 ]
 
 ROOT_URLCONF = 'djsf.urls'
@@ -137,10 +140,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 INTERNAL_IPS = ('127.0.0.1',)
 
@@ -164,21 +168,6 @@ REST_FRAMEWORK = {
 }
 
 SLDS_URL = 'libs/slds245'
-
-# DEBUG_TOOLBAR_PANELS = [
-#     'debug_toolbar.panels.versions.VersionsPanel',
-#     'debug_toolbar.panels.timer.TimerPanel',
-#     'debug_toolbar.panels.settings.SettingsPanel',
-#     'debug_toolbar.panels.headers.HeadersPanel',
-#     'debug_toolbar.panels.request.RequestPanel',
-#     'debug_toolbar.panels.sql.SQLPanel',
-#     'debug_toolbar.panels.staticfiles.StaticFilesPanel',
-#     'debug_toolbar.panels.templates.TemplatesPanel',
-#     'debug_toolbar.panels.cache.CachePanel',
-#     'debug_toolbar.panels.signals.SignalsPanel',
-#     'debug_toolbar.panels.logging.LoggingPanel',
-#     'debug_toolbar.panels.redirects.RedirectsPanel',
-# ]
 
 def show_toolbar(request):
     return True
@@ -211,8 +200,7 @@ LOGGING = {
             'handlers': ['console'],
             'level': 'DEBUG',
         },
-    },
-    # 'root': {
-    #     'level': 'DEBUG',
-    # },
+    }
 }
+
+THUMBNAIL_HIGH_RESOLUTION = True

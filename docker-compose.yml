@@ -2,6 +2,7 @@ version: '3'
 services:
   web:
     build: ./backend
+    command: ./manage.py runserver 0.0.0.0:8000
     environment:
       DATABASE_URL: postgres://postgres:1234@db/postgres
     ports:
