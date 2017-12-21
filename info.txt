@@ -9,3 +9,74 @@ docker-compose run --rm db pg_dump -h db -U postgres postgres > database.sql
 
 # build and watch with destination to ./backend/static/dist/app1
 docker-compose run --rm frontend npm start
+
+
+-----------------
+Web Component Example
+
+
+<my-comp city="Doom" onload="console.log(event)"></my-comp>
+
+<template id="weather-info">
+    <style>
+        :host {
+            border: 1px solid red;
+            display: block  ;
+            padding: 15px;
+        }
+    </style>
+    <h1>
+        <img>
+        Weather in <span id="city"></span>
+    </h1>
+    <p>
+        <span id="temp"></span> - <span id="description"></span>
+    </p>
+</template>
+
+<script>
+    const tpl = (document.currentScript || document._currentScript).ownerDocument.querySelector('template').content
+
+    class MyComp extends HTMLElement {
+        /*
+        constructor() {
+            this.attachShadow({ mode: 'open'})
+        }*/
+
+        static get observedAttributes() {return ['city']; }
+
+        get city() { return this.getAttribute('city') }
+        set city(value) { this.setAttribute('city', value ) }
+
+
+        connectedCallback() {
+            console.log('Hello MyComp')
+            this.attachShadow({mode: 'open'})
+
+            const content = document.importNode(tpl, true)
+            this.shadowRoot.appendChild(content)
+            this.update()
+        }
+
+        attributeChangedCallback(name, oldVal, newVal) {
+            this.update()
+        }
+
+        update() {
+            if (!this.shadowRoot) return;
+            this.shadowRoot.querySelector('#city').textContent = this.city
+            var that = this
+            setTimeout(function(){
+                console.log('Fire Event')
+                that.dispatchEvent(new CustomEvent('load', {
+                    detail: {
+                        aaaaa: 'bbbbb'
+                    }
+                }))
+            }, 3000)
+        }
+
+
+    }
+    window.customElements.define('my-comp', MyComp)
+</script>

@@ -6,9 +6,14 @@
 {% endblock %}
 {% block content %}
     <app-root></app-root>
-    <script type="text/javascript" src="{% static '/apps/app1/inline.bundle.js'%}"></script>
-    <script type="text/javascript" src="{% static '/apps/app1/polyfills.bundle.js'%}"></script>
-    <script type="text/javascript" src="{% static '/apps/app1/styles.bundle.js'%}"></script>
-    <script type="text/javascript" src="{% static '/apps/app1/vendor.bundle.js'%}"></script>
-    <script type="text/javascript" src="{% static '/apps/app1/main.bundle.js'%}"></script>
+
+{#    <script type="text/javascript" src="{% static '/apps/inline.bundle.js'%}"></script>#}
+{#    <script type="text/javascript" src="{% static '/apps/polyfills.bundle.js'%}"></script>#}
+{#    <script type="text/javascript" src="{% static '/apps/vendor.bundle.js'%}"></script>#}
+{#    <script type="text/javascript" src="{% static '/apps/file-manager.bundle.js'%}"></script>#}
+
+    <script type="text/javascript" src="{% static '/apps/inline.prod.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static '/apps/polyfills.prod.bundle.js'%}"></script>
+    <script type="text/javascript" src="{% static '/apps/file-manager-2.prod.bundle.js'%}"></script>
+
 {% endblock %}

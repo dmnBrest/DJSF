@@ -45,5 +45,5 @@ Thumbs.db
 /backend/static/apps
 /backend/static/libs
 package-lock.json
-filer_public
-filer_public_thumbnails
+.env
+media

@@ -11,10 +11,9 @@ class Post(models.Model):
     slug = models.SlugField(unique=True)
     body_raw = models.TextField()
     body_html = models.TextField()
-    parent = models.ForeignKey(User, on_delete=models.CASCADE)
+    parent = models.ForeignKey('self')
     user = models.ForeignKey(User, on_delete=models.SET(get_sentinel_user))
     is_published = models.BooleanField(default=False)
-    # thumbnail
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
