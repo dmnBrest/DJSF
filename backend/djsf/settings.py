@@ -13,28 +13,35 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 import os
 from os.path import join
 import sys
-import dj_database_url
-from dotenv import load_dotenv
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-dotenv_path = join(BASE_DIR, '.env')
-load_dotenv(dotenv_path)
+if os.getenv('GAE_INSTANCE'):
+    pass
+else:
+    from dotenv import load_dotenv
+    env_file = os.environ.get("ENV_FILE") if os.environ.get("ENV_FILE") else '.env'
+    print('ENV_FILE: '+env_file)
+    dotenv_path = join(BASE_DIR, env_file)
+    load_dotenv(dotenv_path)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'ka#0t%8c8d1(ukiof-@u72nw42!qc87hw2j1tx7r!(3+f1u2^1'
+SECRET_KEY = os.environ.get("SECRET_KEY"),
 
-AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
-AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
+# AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
+# AWS_ACCESS_KEY_ID = os.environ.get("AWS_ACCESS_KEY_ID")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    'localhost',
+    'd-base.appspot.com'
+]
 
 # Application definition
 
@@ -100,9 +107,32 @@ WSGI_APPLICATION = 'djsf.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
+# DATABASES = {
+#     'default': dj_database_url.config()
+# }
+
+# [START dbconfig]
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': {
+        # If you are using Cloud SQL for MySQL rather than PostgreSQL, set
+        # 'ENGINE': 'django.db.backends.mysql' instead of the following.
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("DB_PASSWORD"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT"),
+    }
 }
+# In the flexible environment, you connect to CloudSQL using a unix socket.
+# Locally, you can use the CloudSQL proxy to proxy a localhost connection
+# to the instance
+# DATABASES['default']['HOST'] = '/cloudsql/<your-cloudsql-connection-string>'
+# if os.getenv('GAE_INSTANCE'):
+#     pass
+# else:
+#     DATABASES['default']['HOST'] = '127.0.0.1'
+# # [END dbconfig]
 
 EMAIL_HOST = 'mailcatcher'
 EMAIL_HOST_USER = ''
@@ -146,10 +176,13 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
-STATIC_URL = '/static/'
+STATIC_URL = os.environ.get("STATIC_URL")
+
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
 ]
+STATIC_ROOT = 'collected_static'
+
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 

@@ -46,4 +46,9 @@ Thumbs.db
 /backend/static/libs
 package-lock.json
 .env
+.env_production
 media
+collected_static
+collected_static/*
+app.yaml
+

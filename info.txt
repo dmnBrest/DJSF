@@ -11,6 +11,35 @@ docker-compose run --rm db pg_dump -h db -U postgres postgres > database.sql
 docker-compose run --rm frontend npm start
 
 
+install Google Cloud SDK
+
+echo "deb http://packages.cloud.google.com/apt cloud-sdk-jessie main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list
+
+curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | sudo apt-key add -
+
+sudo apt-get update && sudo apt-get install google-cloud-sdk
+
+gcloud init --console-only
+
+
+gsutil mb gs://d-base-static
+gsutil defacl set public-read gs://d-base-static
+
+python manage.py collectstatic
+gsutil rsync -R collected_static/ gs://d-base-static/static
+
+gunicorn -b :8000 djsf.wsgi
+
+DJANGO_SETTINGS_MODULE=djsf.settings PYTHONPATH=. django-admin check
+
+gcloud auth application-default login
+
+ENV_FILE=.env_production
+
+ENV_FILE=.env_production python manage.py migrate
+
+
+
 -----------------
 Web Component Example
 

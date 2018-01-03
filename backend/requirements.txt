@@ -1,8 +1,9 @@
 Django==1.11
-dj-database-url==0.4.2
 psycopg2==2.7.3
 django-allauth==0.34.0
 djangorestframework==3.7.3
 django-debug-toolbar==1.9.1
 drf-flex-fields==0.2.2
 python-dotenv==0.7.1
+wheel==0.30.0
+gunicorn==19.7.1

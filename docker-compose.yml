@@ -1,7 +1,9 @@
-version: '3'
+version: '3.2'
 services:
   web:
-    build: ./backend
+    build:
+      context: .
+      dockerfile: ./Dockerfile_backend
     command: ./manage.py runserver 0.0.0.0:8000
     environment:
       DATABASE_URL: postgres://postgres:1234@db/postgres
@@ -9,11 +11,15 @@ services:
     - 8000:8000
     volumes:
     - ./backend:/code
+    - ./temp/config:/root/.config
     depends_on:
     - db
+    - sql_proxy
     - mailcatcher
   frontend:
-    build: ./frontend
+    build:
+      context: .
+      dockerfile: ./Dockerfile_frontend
     command: npm start
     volumes:
     - ./frontend:/code
@@ -24,9 +30,18 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: 1234
     volumes:
-    - ./temp/djsf_db:/var/lib/postgresql/data
+    - ./temp/db:/var/lib/postgresql/data
     ports:
     - 5432:5432
+  sql_proxy:
+    image: gcr.io/cloudsql-docker/gce-proxy:1.11
+    command: /cloud_sql_proxy -instances="d-base:us-central1:d-postgres-2"=tcp:0.0.0.0:5433
+    ports:
+    - 5433:5433
+    volumes:
+    - type: bind
+      source: ./temp/config
+      target: /root/.config
   mailcatcher:
     image: schickling/mailcatcher
     ports:
