@@ -1,5 +1,9 @@
 FROM node:9
-RUN npm config set user 0 && npm config set unsafe-perm true && npm install --global webpack@3.10.0 && mkdir /code && mkdir /dist
+RUN npm config set user 0 && npm config set unsafe-perm true && \
+    npm install --global webpack@3.10.0 && \
+    npm install --global @angular/cli && \
+    mkdir /code && \
+    mkdir /dist
 WORKDIR /code
 COPY ./frontend /code
 RUN npm install

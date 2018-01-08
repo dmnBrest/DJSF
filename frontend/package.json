@@ -5,7 +5,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "profile": "ng build --app profile",
+    "file-manager": "ng build --app file-manager",
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e"

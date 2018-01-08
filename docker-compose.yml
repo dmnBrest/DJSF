@@ -1,4 +1,4 @@
-version: '3.2'
+version: '3.1'
 services:
   web:
     build:
@@ -14,7 +14,6 @@ services:
     - ./temp/config:/root/.config
     depends_on:
     - db
-    - sql_proxy
     - mailcatcher
   frontend:
     build:
@@ -33,15 +32,6 @@ services:
     - ./temp/db:/var/lib/postgresql/data
     ports:
     - 5432:5432
-  sql_proxy:
-    image: gcr.io/cloudsql-docker/gce-proxy:1.11
-    command: /cloud_sql_proxy -instances="d-base:us-central1:d-postgres-2"=tcp:0.0.0.0:5433
-    ports:
-    - 5433:5433
-    volumes:
-    - type: bind
-      source: ./temp/config
-      target: /root/.config
   mailcatcher:
     image: schickling/mailcatcher
     ports:

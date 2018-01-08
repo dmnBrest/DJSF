@@ -5,15 +5,15 @@
   },
   "apps": [
     {
-      "name":"app1",
+      "name":"file-manager",
       "root": "src",
-      "outDir": "./../backend/static/apps/app1",
+      "outDir": "/dist/file-manager",
       "assets": [
         "assets",
         "favicon.ico"
       ],
       "index": "index.html",
-      "main": "main.ts",
+      "main": "file-manager.entry.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
@@ -30,15 +30,15 @@
       }
     },
     {
-      "name":"app2",
+      "name":"profile",
       "root": "src",
-      "outDir": "./../backend/static/apps/app2",
+      "outDir": "/dist/profile",
       "assets": [
         "assets",
         "favicon.ico"
       ],
       "index": "index.html",
-      "main": "main2.ts",
+      "main": "profile.entry.ts",
       "polyfills": "polyfills.ts",
       "test": "test.ts",
       "tsconfig": "tsconfig.app.json",
