@@ -1,0 +1,126 @@
+<html>
+    <head>
+
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
+            crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.19.2/js/vendor/jquery.ui.widget.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/blueimp-file-upload/9.19.2/js/jquery.fileupload.min.js"></script>
+
+    </head>
+    <body>
+
+        <form action="https://{{s3.bucket}}.s3.amazonaws.com/" method="post" enctype="multipart/form-data">
+            <!-- /user/user1/${filename} -->
+            <input type="hidden" name="key" value="{{s3.prefix}}{{s3.amz_date}}_${filename}" />
+            <!-- private | public-read | public-read-write | authenticated-read | bucket-owner-read | bucket-owner-full-control -->
+            <input type="hidden" name="acl" value="public-read" />
+            <!-- The signing algorithm used to authenticate the request. For AWS Signature Version 4, the value is AWS4-HMAC-SHA256 -->
+            <input type="hidden" name="X-Amz-Algorithm" value="{{s3.amz_algorithm}}" />
+            <!-- <your-access-key-id>/<date>/<aws-region>/<aws-service>/aws4_request -->
+            <input type="hidden" name="X-Amz-Credential" value="{{s3.amz_credential}}" />
+            <!-- It is the date value in ISO8601 format. For example, 20130728T000000Z. -->
+            <input type="hidden" name="X-Amz-Date" value="{{s3.amz_date}}" />
+            <input type="hidden" name="success_action_status" value="200" />
+            <input type="hidden"  name="Content-Type" value="image/jpeg" />
+            <!-- The Base64 encoded security policy that describes what is permitted in the request -->
+            <input type="hidden" name="Policy" value="{{s3.policy}}" />
+            <!-- (AWS Signature Version 4) The HMAC-SHA256 hash of the security policy. -->
+            <input type="hidden" name="X-Amz-Signature" value="{{s3.signature}}" />
+            <span class="slds-button slds-button_success fileinput-button">
+                <i class="glyphicon glyphicon-plus"></i>
+                <!-- The file input field used as target for the file upload widget -->
+                <input id="fileupload" type="file" name="file" multiple />
+            </span>
+            <button class="slds-button slds-button_brand" >UPLOAD!</button>
+        </form>
+
+        <script>
+
+            window.ssend = function(){
+                $('#fileupload').fileupload('send', {files: window.ffiles});
+            }
+
+            function initUploadImageToS3() {
+                var url = 'https://{{s3.bucket}}.s3.amazonaws.com/';
+                jQuery('#fileupload').fileupload({
+                    forceIframeTransport: false,
+                    singleFileUploads: true,
+                    url: url,
+                    add: function(e, data) {
+
+                        console.log('ADD')
+                        console.log(data);
+
+                        //window.ffiles = data.originalFiles;
+
+                        data.submit();
+
+                        /*
+                        var uploadErrors = [];
+                        var acceptFileTypes = /^image\/(gif|jpe?g|png)$/i;
+                        for (var i=0; i<data.originalFiles.length; i++) {
+                            var file = data.originalFiles[i];
+                            if(file['type'].length && !acceptFileTypes.test(file['type'])) {
+                                uploadErrors.push('{!$Label.UI_Text_Not_an_accepted_file_type}');
+                            }
+                            if(file['size'] > 3000000) {
+                                uploadErrors.push('{!$Label.UI_Text_Filesize_is_too_big}');
+                            }
+                        }
+                        if(uploadErrors.length > 0) {
+                            ractiveImage.set('uploadMessage', uploadErrors.join("\n"));
+                        } else {
+                            var sendReq = data.submit();
+                            ractiveImage.set('uploadMessage', null);
+                            ractiveImage.set('uploadInProgress', true);
+                            ractiveImage.set('uploadedImages', []);
+                        }
+                        */
+                    },
+                    done: function (e, data) {
+                        console.log(data)
+                        /*
+                        ractiveImage.set('uploadInProgress', false);
+                        if (data.jqXHR.status == 200) {
+                            for (var i=0; i<data.files.length; i++) {
+                                var fileName = data.files[i].name.replace(/[#%+']/g, '-');//use the same approach as in send function to use same name.
+                                var fileUrl = "https://{!s3.bucket}.s3.amazonaws.com/{!s3.keyEncoded}{!s3.unixDatetime}_"+encodeURIComponent(fileName);
+                                var image = new Image();
+                                image.src = fileUrl;
+                                image.onload = function() {
+                                    ractiveImage.push('uploadedImages', {
+                                        filename: fileName,
+                                        url: fileUrl,
+                                        // {!$ObjectType.Image__c.fields.Tags__c.name}: initTags,
+                                    });
+                                };
+                                image.onerror = function() {
+                                    ractiveImage.set('uploadedImages', []);
+                                    ractiveImage.set('uploadMessage', '<span style="color: #FF0000;">{!$Label.UI_Text_Image_Not_uploaded_to_S3}</span>');
+                                };
+                            }
+                        } else {
+                            ractiveImage.set('uploadMessage', '<span style="color: #FF0000;">{!$Label.UI_Label_Error}</span>');
+                        }
+                        */
+                    },
+                    send: function (e, data) {
+                        console.log(data)
+                        /*
+                        var file = data.files[0];
+                        var newFileName = file.name.replace(/[#%+']/g, '-');
+                        //file.name - is read only. in this case we replace this file in formData. Warning!!! data.files and data.originalFiles still contains old name.
+                        data.data.set('file', file, newFileName);
+                        */
+                    },
+                }).prop('disabled', !jQuery.support.fileInput).parent().addClass(jQuery.support.fileInput ? undefined : 'disabled');
+            }
+
+            initUploadImageToS3();
+        </script>
+
+    </body>
+</html>

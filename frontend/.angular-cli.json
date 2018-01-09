@@ -7,6 +7,7 @@
     {
       "name":"file-manager",
       "root": "src",
+      "appRoot": "file-manager-app",
       "outDir": "/dist/file-manager",
       "assets": [
         "assets",
@@ -32,6 +33,7 @@
     {
       "name":"profile",
       "root": "src",
+      "appRoot": "profile-app",
       "outDir": "/dist/profile",
       "assets": [
         "assets",

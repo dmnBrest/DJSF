@@ -1,0 +1,4 @@
+docker-compose run --rm frontend npm run file-manager
+
+docker-compose run --rm frontend ng g component list --app file-manager
+
