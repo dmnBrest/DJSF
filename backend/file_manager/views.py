@@ -21,7 +21,7 @@ def index(request):
         fs = FileSystemStorage()
         filename = fs.save(myfile.name, myfile)
         uploaded_file_url = fs.url(filename)
-        return JsonResponse({'message': 'Success'})
+        return JsonResponse({'message': 'Success', 'url': '/media/'+myfile.name})
 
 
     return render(request, 'file_manager/manager.html', {

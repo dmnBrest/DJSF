@@ -15,7 +15,7 @@ import { MessagesService } from '../common/services/messages.service'
     AppComponent,
     ListComponent,
     UploadComponent,
-    DetailsComponent
+	DetailsComponent
   ],
   imports: [
     BrowserModule
